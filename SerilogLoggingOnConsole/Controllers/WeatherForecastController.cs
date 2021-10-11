@@ -11,7 +11,7 @@ namespace SerilogLoggingOnConsole.Controllers
     public class WeatherForecastController : ControllerBase
     {
         private static readonly string[] Summaries = new[]
-        {
+     {
             "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
         };
 
@@ -26,7 +26,18 @@ namespace SerilogLoggingOnConsole.Controllers
         public IEnumerable<WeatherForecast> Get()
         {
             var rng = new Random();
-            _logger.LogInformation("Getting random items");
+            _logger.LogInformation("Getting random items. There are {AvailableItems} possible values", Summaries.Count());
+
+            _logger.LogWarning("This is a warning");
+
+            try
+            {
+                throw new ArgumentException();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "And this is an error");
+            }
 
             return Enumerable.Range(1, 5).Select(index => new WeatherForecast
             {
